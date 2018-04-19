@@ -1,0 +1,97 @@
+﻿@model Elements.DTO.EventDTO
+
+@{
+    ViewBag.Title = "SingleEvent";
+}
+<head>
+    @Styles.Render("~/Content/eventList.css")
+</head>
+<div class="container" style="min-width: 45vh;">
+    <div class="row">
+        <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
+            <div class="event-single">
+                <img src="http://images.pitchero.com/ui/1750030/image_59878a1f1b9e9.PNG" class="event-single-image" />
+                <h2 class="event-single-header">
+                    @Html.DisplayFor(model => model.Name)
+                </h2>
+                <h4 class="event-single-datetime">
+                    @Model.Date.ToString("dd/MM/yyyy HH:mm")
+                </h4>
+                <div class="event-single-description" style="min-height: 15vh;">
+                    <span>
+                        @Html.DisplayFor(model => model.Description)
+                    </span>
+                </div>
+                <div style="width: 100%; height: 200px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 35%">#</th>
+                                <th class="col-sm-5">Ticket Type</th>
+                                <th class="col-sm-5">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td >
+                                    <label class="custom-control custom-checkbox">
+                                        <input id="studentTicketCheckbox" type="checkbox" class="custom-control-input" checked="checked">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </td>
+                                <td>Student</td>
+                                <td>@Html.DisplayFor(model => model.StudentPrice)</td>
+                                <td>DKK</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="numberOfNormalTickets" style="width: 100%;" type="text" value="0" />
+                                </td>
+                                <td>Standard</td>
+                                <td>@Html.DisplayFor(model => model.Price)</td>
+                                <td>DKK</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <span>Total Price: </span>
+                        <div id="totalPrice">
+                            0
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function GetPrice() {
+        var checkboxElement = document.getElementById("studentTicketCheckbox");
+        var numberOfTicketsElement = document.getElementById("numberOfNormalTickets");
+
+        var totalPrice = 0.00;
+
+        if (checkboxElement.checked) {
+            totalPrice += @Model.StudentPrice;
+        }
+
+        if (numberOfTicketsElement.value > 0) {
+            totalPrice += (@Model.Price * numberOfTicketsElement.value);
+        }
+
+        document.getElementById("totalPrice").innerText = totalPrice;
+
+    }
+
+    window.onload = function() {
+        var checkboxElement = document.getElementById("studentTicketCheckbox");
+        var numberOfTicketsElement = document.getElementById("numberOfNormalTickets");
+
+        checkboxElement.addEventListener("click", function (e) { GetPrice() }, false);
+        numberOfTicketsElement.addEventListener("change", function (e) { GetPrice() }, false);
+        numberOfTicketsElement.addEventListener("input", function (e) { GetPrice() }, false);
+        GetPrice();
+    }
+</script>

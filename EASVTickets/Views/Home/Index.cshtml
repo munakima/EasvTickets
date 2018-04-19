@@ -1,0 +1,39 @@
+﻿@model EASVTickets.Models.EventListModel
+
+<head>
+    @Styles.Render("~/Content/eventList.css")
+</head>
+<div class="container" style="min-width: 45vh;">
+    <div class="row">
+        <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
+            <h2>Upcoming Events</h2>
+            <ul class="event-list">
+                @foreach(var eventDTO in Model.Events)
+                {
+                <li id="@eventDTO.Id" class="li-click" onclick="location.href='@Url.Action("SingleEvent", "Home",  new { Id =  eventDTO.Id })'">
+                    <time datetime="@eventDTO.Date">
+                        <span class="day">@eventDTO.Date.Day</span>
+                        <span class="month">@eventDTO.Date.ToString("MMMMM").Substring(0,1)</span>
+                        <span class="year">@eventDTO.Date.Year</span>
+                    </time>
+                    <div class="info">
+                        <h2 class="title">@eventDTO.Name</h2>
+                        <p class="desc" style="height:60%;">@eventDTO.Description</p>
+                        <p class="place">Location: @eventDTO.Place</p>
+                    </div>
+                    <div class="social">
+                       <ul style="height:100%">
+                           <li>Price</li>
+                           <li>@eventDTO.Price DKK</li>
+                           <li>     </li>
+                           <li>Student</li>
+                           <li>@eventDTO.StudentPrice DKK</li>
+                       </ul>
+                    </div>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+

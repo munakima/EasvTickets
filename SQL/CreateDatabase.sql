@@ -1,0 +1,48 @@
+USE MASTER
+GO
+CREATE DATABASE EasvTickets;
+GO
+USE EasvTickets
+
+CREATE TABLE [Event] (
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	Name NVARCHAR(256) NOT NULL,
+	[Description] NVARCHAR(256),
+	Price DECIMAL(19,2) NOT NULL,
+	StudentPrice DECIMAL(19,2),
+	[Date] DATETIME NOT NULL,
+	Place NVARCHAR(256) NOT NULL
+	-- IsDone BOOL
+)
+
+CREATE TABLE [Student] (
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	Email NVARCHAR(256) NOT NULL,
+	-- Name NVARCHAR(256)
+)
+
+CREATE TABLE [TicketType] (
+	Id int NOT NULL,
+	Name NVARCHAR(256) NOT NULL,
+	PRIMARY KEY(Id)
+)
+
+CREATE TABLE [Ticket] (
+	Id int NOT NULL IDENTITY(1,1),
+	EventId INT NOT NULL,
+	IsUsed BIT,
+	StudentId INT NOT NULL,
+	TicketTypeId INT NOT NULL,
+	PRIMARY KEY(Id),
+	FOREIGN KEY (EventId) REFERENCES [Event](Id),
+	FOREIGN KEY (StudentId) REFERENCES [Student](Id),
+	FOREIGN KEY (TicketTypeId) REFERENCES [TicketType](Id)
+)
+
+
+ALTER TABLE [Ticket]
+ADD CONSTRAINT uq_Ticket UNIQUE (EventId, StudentId, TicketTypeId)
+
+
+INSERT INTO [TicketType] VALUES (1, 'Student Ticket')
+INSERT INTO [TicketType] VALUES (2, 'Normal Ticket')
